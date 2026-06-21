@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  anythingllm:
+    image: mintplexlabs/anythingllm
+    container_name: anythingllm
+    ports:
+      - "3001:3001"
+    volumes:
+      - anythingllm_storage:/app/storage
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3000:8080"
+    volumes:
+      - open_webui_storage:/app/backend/data
+    restart: unless-stopped
+
+  searxng:
+    image: searxng/searxng
+    container_name: searxng
+    ports:
+      - "4000:8080"
+    volumes:
+      - ./settings.yml:/etc/searxng/settings.yml
+    restart: unless-stopped
+
+volumes:
+  anythingllm_storage:
+  open_webui_storage:
